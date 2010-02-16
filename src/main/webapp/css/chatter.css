@@ -49,6 +49,10 @@ textarea {
   font-weight: bold;
 }
 
+.italic {
+  font-style: italic;
+}
+
 .menu {
   padding-right: 24px;
 }
