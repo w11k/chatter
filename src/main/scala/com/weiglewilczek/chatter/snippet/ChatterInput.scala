@@ -8,6 +8,7 @@
 package com.weiglewilczek.chatter.snippet
 
 import com.weiglewilczek.chatter.lib.Logging
+import com.weiglewilczek.chatter.model.User._
 
 import net.liftweb.http.SHtml._
 import net.liftweb.util.Helpers._
@@ -18,6 +19,7 @@ class ChatterInput extends Logging {
   def render(xhtml: NodeSeq) = {
     def handleUpdate(text: String) { logger debug "Sending message: %s".format(text) }
     bind("chatter", xhtml,
+         "name" -> currentUserName,
          "text" -> textarea("", handleUpdate _),
          "submit" -> submit("Update", () => ()))
   }

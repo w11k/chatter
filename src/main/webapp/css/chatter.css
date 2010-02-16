@@ -45,6 +45,14 @@ textarea {
   font-weight: bold;
 }
 
+.currentMenu {
+  font-weight: bold;
+}
+
+.menu {
+  padding-right: 24px;
+}
+
 .right {
   text-align: right;
 }

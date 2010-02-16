@@ -10,9 +10,14 @@ package com.weiglewilczek.chatter
 import lib.DateHelpers._
 import lib.LocaleHelpers._
 import lib.Logging
+import model.User
 
 import java.util.ResourceBundle
-import net.liftweb.http.{ Bootable, LiftRules }
+import net.liftweb.http.{ Bootable, LiftRules, RedirectResponse }
+import net.liftweb.mapper.{ DB, DBLogEntry, DefaultConnectionIdentifier, Schemifier, StandardDBVendor }
+import net.liftweb.sitemap.{ Loc, Menu, SiteMap }
+import net.liftweb.sitemap.Loc._
+import net.liftweb.util.{Log, Props}
 import net.liftweb.util.Helpers._
 
 /**
@@ -38,22 +43,26 @@ Boot extends Bootable with Logging {
     LiftRules addToPackages getClass.getPackage
 
     // SiteMap
+    val ifLoggedIn = If(() => User.loggedIn_?, () => RedirectResponse(User.loginPageURL))
+    val homeMenu = Menu(Loc("home", List("index"), "Home", ifLoggedIn))
+    val menus = homeMenu :: User.menus
+    LiftRules setSiteMap SiteMap(menus: _*)
 
     // DB configuration
-//    val dbVendor =
-//      new StandardDBVendor(Props get "db.driver" openOr "org.h2.Driver",
-//                           Props get "db.url" openOr "jdbc:h2:XXX",
-//                           Props get "db.user",
-//                           Props get "db.password") {
-//      override def maxPoolSize = Props getInt "db.pool.size" openOr 3
-//    }
-//    DB.defineConnectionManager(DefaultConnectionIdentifier, dbVendor)
-//    DB addLogFunc { (query, _) =>
-//      query.allEntries foreach {
-//        case DBLogEntry(stmt, duration) => logger debug (stmt + " took " + duration + "ms.")
-//      }
-//    }
-//    Schemifier.schemify(true, Log.infoF _, XXX)
+    val dbVendor =
+      new StandardDBVendor(Props get "db.driver" openOr "org.h2.Driver",
+                           Props get "db.url" openOr "jdbc:h2:chatter",
+                           Props get "db.user",
+                           Props get "db.password") {
+      override def maxPoolSize = Props getInt "db.pool.size" openOr 3
+    }
+    DB.defineConnectionManager(DefaultConnectionIdentifier, dbVendor)
+    DB addLogFunc { (query, _) =>
+      query.allEntries foreach {
+        case DBLogEntry(stmt, duration) => logger debug (stmt + " took " + duration + "ms.")
+      }
+    }
+    Schemifier.schemify(true, Log infoF _, User)
 
     // Mailer configuration
 //    val user = Props get "mail.user" openOr "XXX"
