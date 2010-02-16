@@ -1,3 +1,8 @@
 <lift:surround with="default" at="content">
-  <div>Welcome to Chatter</div>
+  <lift:ChatterInput form="post">
+    <div class="bold">What's happening?</div>
+    <div><chatter:text/></div>
+    <div class="right"><chatter:submit/></div>
+    <hr/>
+  </lift:ChatterInput>
 </lift:surround>
