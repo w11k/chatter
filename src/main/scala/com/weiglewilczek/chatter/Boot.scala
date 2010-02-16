@@ -10,7 +10,7 @@ package com.weiglewilczek.chatter
 import lib.DateHelpers._
 import lib.LocaleHelpers._
 import lib.Logging
-import model.User
+import model.{ User, UserFollowingUser }
 
 import java.util.ResourceBundle
 import net.liftweb.http.{ Bootable, LiftRules, RedirectResponse }
@@ -45,7 +45,9 @@ Boot extends Bootable with Logging {
     // SiteMap
     val ifLoggedIn = If(() => User.loggedIn_?, () => RedirectResponse(User.loginPageURL))
     val homeMenu = Menu(Loc("home", List("index"), "Home", ifLoggedIn))
-    val menus = homeMenu :: User.menus
+    val followersMenu = Menu(Loc("followers", List("followers"), "Followers", ifLoggedIn))
+    val followingMenu = Menu(Loc("following", List("following"), "Following", ifLoggedIn))
+    val menus = homeMenu :: followersMenu :: followingMenu :: User.menus
     LiftRules setSiteMap SiteMap(menus: _*)
 
     // DB configuration
@@ -62,7 +64,7 @@ Boot extends Bootable with Logging {
         case DBLogEntry(stmt, duration) => logger debug (stmt + " took " + duration + "ms.")
       }
     }
-    Schemifier.schemify(true, Log infoF _, User)
+    Schemifier.schemify(true, Log infoF _, User, UserFollowingUser)
 
     // Mailer configuration
 //    val user = Props get "mail.user" openOr "XXX"

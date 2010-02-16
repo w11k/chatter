@@ -9,6 +9,7 @@ package com.weiglewilczek.chatter.lib
 
 import java.util.Date
 import net.liftweb.actor.LiftActor
+import net.liftweb.common.Box
 import net.liftweb.http.ListenerManager
 
 object ChatterServer extends LiftActor with ListenerManager with Logging {
@@ -16,7 +17,7 @@ object ChatterServer extends LiftActor with ListenerManager with Logging {
   private var message: ChatterMessage = _
 
   override def lowPriority = {
-    case message @ ChatterMessage(_, _, text) if !text.isEmpty => {
+    case message @ ChatterMessage(_, _, _, text) if !text.isEmpty => {
       logger debug "Received Chatter message: %s".format(message)
       this.message = message
       updateListeners()
@@ -26,4 +27,4 @@ object ChatterServer extends LiftActor with ListenerManager with Logging {
   override protected def createUpdate = message
 }
 
-case class ChatterMessage(name: String, date: Date, text: String)
+case class ChatterMessage(userId: Box[String], name: Box[String], date: Date, text: String)

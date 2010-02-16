@@ -22,13 +22,13 @@ class ChatterInput extends Logging {
 
   def render(xhtml: NodeSeq) = {
     def handleUpdate(text: String) {
-      val message = ChatterMessage(currentUserName, now, text.trim)
+      val message = ChatterMessage(currentUserId, currentUserName, now, text.trim)
       logger debug "Sending Chatter message to server: %s".format(message)
       ChatterServer ! message
     }
     ajaxForm(After(100, SetValueAndFocus(messageId, "")),
              bind("chatter", xhtml,
-                  "name" -> currentUserName,
+                  "name" -> (currentUserName openOr ""),
                   "text" -> textarea("", handleUpdate _, "id" -> messageId),
                   "submit" -> submit("Update", () => ())))
   }
