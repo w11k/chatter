@@ -1,0 +1,40 @@
+a {
+  color: #9b1d23;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #9b1d23;
+  font-weight: bold;
+}
+
+body {
+  background-color: #e7792b;
+  margin: 0px;
+}
+
+div {
+  color: #333333;
+  font-family: sans-serif;
+  font-size: 11pt;
+}
+
+td {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#copyright {
+  font-style: italic;
+  text-align: center;
+}
+
+.segment {
+  background-color: white;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+}

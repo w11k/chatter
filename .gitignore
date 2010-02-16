@@ -1,0 +1,24 @@
+# Build directory
+target
+
+# Mac stuff
+.DS_Store
+
+# Eclipse stuff
+.classpath
+.launch
+.metadata
+.project
+.scala_dependencies
+.settings
+
+# IntelliJ stuff
+.idea
+*.iml
+*.ipr
+*.iws
+
+# Chatter stuff
+chatter.h2.*
+chatter.log
+
