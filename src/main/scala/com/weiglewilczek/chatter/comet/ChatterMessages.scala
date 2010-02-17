@@ -11,6 +11,7 @@ import com.weiglewilczek.chatter.lib.{ ChatterMessage, ChatterServer, Logging }
 import com.weiglewilczek.chatter.lib.DateHelpers._
 import com.weiglewilczek.chatter.lib.LocaleHelpers._
 import com.weiglewilczek.chatter.model.User
+import com.weiglewilczek.chatter.model.UserFollowingUser._
 
 import net.liftweb.common.{ Box, Empty }
 import net.liftweb.http.{ CometActor, CometListener }
@@ -48,7 +49,7 @@ class ChatterMessages extends CometActor with CometListener with Logging {
       val should = for {
         u <- user
         uid <- userId
-      } yield if (u.id.is.toString == uid) true else false
+      } yield if (u.id.is.toString == uid) true else following_?(u, uid.toLong)
       should openOr false
   }
 

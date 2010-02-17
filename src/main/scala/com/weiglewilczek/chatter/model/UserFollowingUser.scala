@@ -13,6 +13,8 @@ import net.liftweb.mapper.{ By, IdPK, In, LongKeyedMapper, LongKeyedMetaMapper, 
 
 object UserFollowingUser extends UserFollowingUser with LongKeyedMetaMapper[UserFollowingUser] {
 
+  def following_?(u: User, userId: Long) = find(By(user, u), By(following, userId)).isDefined
+
   def findAllFollowers = User.currentUser map { u =>
     User findAll In(User.id, user, By(following, u))
   } openOr Nil
