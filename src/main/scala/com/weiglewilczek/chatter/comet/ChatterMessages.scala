@@ -21,12 +21,12 @@ class ChatterMessages extends CometActor with CometListener with Logging {
 
   private var messages = List[ChatterMessage]()
 
-  private var user: Box[User] = Empty
+  private var user: User = _
 
   override def render = {
     def bindMessages(template: NodeSeq): NodeSeq = messages flatMap { m =>
       bind("message", template,
-           "name" -> (m.name openOr ""),
+           "name" -> m.name,
            "date" -> format(m.date, boxedSessionLocale),
            "text" -> m.text)
     }
@@ -46,15 +46,11 @@ class ChatterMessages extends CometActor with CometListener with Logging {
 
   override def shouldUpdate = {
     case ChatterMessage(userId, _, _, _) =>
-      val should = for {
-        u <- user
-        uid <- userId
-      } yield if (u.id.is.toString == uid) true else following_?(u, uid.toLong)
-      should openOr false
+      if (user.id.is == userId) true else following_?(user, userId)
   }
 
   override def localSetup() {
-    user = User.currentUser
+    user = User.currentUser.open_! // We may do this, because we require a logged-in user.
     super.localSetup()
   }
 }

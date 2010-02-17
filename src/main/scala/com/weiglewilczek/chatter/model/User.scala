@@ -13,8 +13,6 @@ import scala.xml.NodeSeq
 
 object User extends User with MetaMegaProtoUser[User] {
 
-  def currentUserName = currentUser map { _.shortName }
-
   override def signupFields = firstName :: email :: password :: Nil
 
   override def skipEmailValidation = true

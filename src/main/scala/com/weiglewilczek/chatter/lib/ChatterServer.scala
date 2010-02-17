@@ -27,4 +27,4 @@ object ChatterServer extends LiftActor with ListenerManager with Logging {
   override protected def createUpdate = message
 }
 
-case class ChatterMessage(userId: Box[String], name: Box[String], date: Date, text: String)
+case class ChatterMessage(userId: Long, name: String, date: Date, text: String)
