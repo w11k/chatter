@@ -3,14 +3,14 @@
     <lift:Follow.findAllFollowing>
       <div class="bold">You are following <follow:size/> people</div>
       <follow:list>
-        <div><follow:name/></div>
+        <div><follow:name/>&nbsp;<follow:unfollow/></div>
       </follow:list>
     </lift:Follow.findAllFollowing>
   </div>
   <hr/>
   <div>
-    <div class="bold">Start following</div>
     <lift:Follow.follow form="post">
+      <div class="bold">Start following</div>
       <follow:users/>&nbsp;<follow:submit/>
     </lift:Follow.follow>
   </div>
