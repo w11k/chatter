@@ -1,0 +1,6 @@
+db.driver=org.postgresql.Driver
+db.url=jdbc:postgresql:chatter
+db.user=chatter
+db.password=chatter
+db.pool.size=5
+
