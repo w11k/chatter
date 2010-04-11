@@ -5,23 +5,20 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package com.weiglewilczek.chatter.comet
+package com.weiglewilczek.chatter
+package comet
 
-import com.weiglewilczek.chatter.lib.{ ChatterMessage, ChatterServer, Logging }
-import com.weiglewilczek.chatter.lib.DateHelpers._
-import com.weiglewilczek.chatter.lib.LocaleHelpers._
-import com.weiglewilczek.chatter.model.User
-import com.weiglewilczek.chatter.model.UserFollowingUser._
+import lib.{ ChatterMessage, ChatterServer }
+import lib.DateHelpers._
+import lib.LocaleHelpers._
+import model.User
+import model.UserFollowingUser._
 
-import net.liftweb.common.{ Box, Empty }
+import net.liftweb.common.Loggable
 import net.liftweb.http.{ CometActor, CometListener }
 import scala.xml.NodeSeq
 
-class ChatterMessages extends CometActor with CometListener with Logging {
-
-  private var messages = List[ChatterMessage]()
-
-  private var user: User = _
+class ChatterMessages extends CometActor with CometListener with Loggable {
 
   override def render = {
     def bindMessages(template: NodeSeq): NodeSeq = messages flatMap { m =>
@@ -53,4 +50,8 @@ class ChatterMessages extends CometActor with CometListener with Logging {
     user = User.currentUser.open_! // We may do this, because we require a logged-in user.
     super.localSetup()
   }
+
+  private var messages = List[ChatterMessage]()
+
+  private var user: User = _
 }

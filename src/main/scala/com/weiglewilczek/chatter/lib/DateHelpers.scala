@@ -5,11 +5,12 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package com.weiglewilczek.chatter.lib
+package com.weiglewilczek.chatter
+package lib
 
 import java.text.DateFormat._
 import java.util.{ Date, Locale }
-import net.liftweb.common.{ Box, Empty, Failure, Full }
+import net.liftweb.common.{ Box, Empty, Failure, Full, Loggable }
 
 /**
  * We use this object to access date utility functions.
@@ -19,7 +20,7 @@ object DateHelpers extends DateHelpers
 /**
  * We mix-in this trait to add date utility functions.
  */
-trait DateHelpers extends Logging {
+trait DateHelpers extends Loggable {
 
   /**
    * Format the given date for the given or default (if given is Empty) Locale in SHORT style.

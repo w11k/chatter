@@ -5,9 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package com.weiglewilczek.chatter.lib
-
-import net.liftweb.http.js.JsExp
+package com.weiglewilczek.chatter
+package lib
 
 /**
  * We use this object to access image utility functions.

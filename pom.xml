@@ -74,9 +74,9 @@ Chatter
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
     <!-- Specific settings for ScalaModules -->
-    <scala.version>2.7.7</scala.version>
-    <scalatest.version>1.0</scalatest.version>
-    <lift.version>2.0-SNAPSHOT</lift.version>
+    <scala.version>2.8.0.Beta1</scala.version>
+    <scalatest.version>1.0.1-for-scala-2.8.0.Beta1-SNAPSHOT</scalatest.version>
+    <lift.version>2.0-scala280-SNAPSHOT</lift.version>
   </properties>
 
   <!--
@@ -113,6 +113,12 @@ Chatter
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>1.2.127</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.14</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -257,6 +263,10 @@ Chatter
           </jvmArgs>
           <args>
             <arg>-target:jvm-1.5</arg>
+            <arg>-make:changed</arg>
+            <arg>-deprecation</arg>
+            <arg>-unchecked</arg>
+            <arg>-optimise</arg>
           </args>
         </configuration>
         <executions>

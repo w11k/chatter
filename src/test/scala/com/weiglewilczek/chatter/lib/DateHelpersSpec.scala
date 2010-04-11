@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package com.weiglewilczek.chatter.lib
+package com.weiglewilczek.chatter
+package lib
 
 import java.util.{ Date, Locale }
 import Locale._

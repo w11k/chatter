@@ -5,10 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package com.weiglewilczek.chatter.snippet
+package com.weiglewilczek.chatter
+package snippet
 
-import com.weiglewilczek.chatter.lib.ImgHelpers._
-import com.weiglewilczek.chatter.model.{ User, UserFollowingUser }
+import lib.ImgHelpers._
+import model.{ User, UserFollowingUser }
 
 import net.liftweb.common.Empty
 import net.liftweb.http.SHtml._
@@ -40,7 +41,7 @@ class Follow {
   }
 
   def follow(xhtml: NodeSeq) = {
-    val selectableUsers = UserFollowingUser.findAllNotFollowing sort {
+    val selectableUsers = UserFollowingUser.findAllNotFollowing sortWith {
       _.shortName < _.shortName
     } map { 
       u => (u.id.is.toString, nameAndEmail(u))
@@ -50,7 +51,7 @@ class Follow {
       var selectedUserId = ""
       def handleSubmit() { UserFollowingUser follow selectedUserId.toLong }
       bind("follow", xhtml,
-           "users" -> select(selectableUsers, Empty, selectedUserId = _),
+           "users" -> select(selectableUsers, Empty, s => selectedUserId = s),
            "submit" -> submit("Add", handleSubmit _))
     }
   }

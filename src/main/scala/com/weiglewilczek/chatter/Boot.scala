@@ -9,22 +9,22 @@ package com.weiglewilczek.chatter
 
 import lib.DateHelpers._
 import lib.LocaleHelpers._
-import lib.Logging
 import model.{ User, UserFollowingUser }
 
 import java.util.ResourceBundle
+import net.liftweb.common.{ Logger, Loggable }
 import net.liftweb.http.{ Bootable, LiftRules, RedirectResponse }
 import net.liftweb.mapper.{ DB, DBLogEntry, DefaultConnectionIdentifier, Schemifier, StandardDBVendor }
 import net.liftweb.sitemap.{ Loc, Menu, SiteMap }
 import net.liftweb.sitemap.Loc._
-import net.liftweb.util.{Log, Props}
+import net.liftweb.util.Props
 import net.liftweb.util.Helpers._
 
 /**
  * Here we configure our Lift application.
  */
 class
-Boot extends Bootable with Logging {
+Boot extends Bootable with Loggable {
 
   override def boot() {
     logger info "Booting Chatter, please stand by ..."
@@ -59,12 +59,13 @@ Boot extends Bootable with Logging {
       override def maxPoolSize = Props getInt "db.pool.size" openOr 3
     }
     DB.defineConnectionManager(DefaultConnectionIdentifier, dbVendor)
+    val dbLogger = Logger("com.weiglewilczek.chatter.DB")
     DB addLogFunc { (query, _) =>
       query.allEntries foreach {
-        case DBLogEntry(stmt, duration) => logger debug (stmt + " took " + duration + "ms.")
+        case DBLogEntry(stmt, duration) => dbLogger debug (stmt + " took " + duration + "ms.")
       }
     }
-    Schemifier.schemify(true, Log infoF _, User, UserFollowingUser)
+    Schemifier.schemify(true, (dbLogger info _): (=> AnyRef) => Unit, User, UserFollowingUser)
 
     // Mailer configuration
 //    val user = Props get "mail.user" openOr "XXX"

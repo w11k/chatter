@@ -5,20 +5,19 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package com.weiglewilczek.chatter.snippet
+package com.weiglewilczek.chatter
+package snippet
 
-import com.weiglewilczek.chatter.lib.{ ChatterMessage, ChatterServer, Logging }
-import com.weiglewilczek.chatter.model.User
+import lib.{ ChatterMessage, ChatterServer }
+import model.User
 
+import net.liftweb.common.Loggable
 import net.liftweb.http.SHtml._
-import net.liftweb.http.js.JsCmds.After
-import net.liftweb.http.js.jquery.JqJsCmds.SetValueAndFocus
+import net.liftweb.http.js.JsCmds.{ After, SetValueAndFocus }
 import net.liftweb.util.Helpers._
 import scala.xml.NodeSeq
 
-class ChatterInput extends Logging {
-
-  private lazy val messageId = nextFuncName
+class ChatterInput extends Loggable {
 
   def render(xhtml: NodeSeq) = {
     val user = User.currentUser.open_! // We may do this, because we require a logged-in user.
@@ -33,4 +32,6 @@ class ChatterInput extends Logging {
                   "text" -> textarea("", handleUpdate _, "id" -> messageId),
                   "submit" -> submit("Update", () => ())))
   }
+
+  private lazy val messageId = nextFuncName
 }

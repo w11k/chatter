@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package com.weiglewilczek.chatter.model
+package com.weiglewilczek.chatter
+package model
 
 import net.liftweb.common.Empty
 import net.liftweb.mapper.{ MegaProtoUser, MetaMegaProtoUser }

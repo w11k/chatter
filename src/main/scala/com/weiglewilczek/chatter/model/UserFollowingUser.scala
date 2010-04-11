@@ -5,13 +5,13 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package com.weiglewilczek.chatter.model
+package com.weiglewilczek.chatter
+package model
 
-import com.weiglewilczek.chatter.lib.Logging
-
+import net.liftweb.common.Loggable
 import net.liftweb.mapper.{ By, IdPK, In, LongKeyedMapper, LongKeyedMetaMapper, MappedLongForeignKey }
 
-object UserFollowingUser extends UserFollowingUser with LongKeyedMetaMapper[UserFollowingUser] {
+object UserFollowingUser extends UserFollowingUser with LongKeyedMetaMapper[UserFollowingUser] with Loggable {
 
   def following_?(u: User, userId: Long) = find(By(user, u), By(following, userId)).isDefined
 
@@ -43,7 +43,7 @@ object UserFollowingUser extends UserFollowingUser with LongKeyedMetaMapper[User
   }
 }
 
-class UserFollowingUser extends LongKeyedMapper[UserFollowingUser] with IdPK with Logging {
+class UserFollowingUser extends LongKeyedMapper[UserFollowingUser] with IdPK {
 
   val user = new MappedLongForeignKey(this, User) {}
 
