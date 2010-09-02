@@ -1,0 +1,9 @@
+p=. !http://github.com/downloads/weiglewilczek/chatter/chatter-logo.png!
+
+Chatter is a Twitter-like demo for "Scala":http://www.scala-lang.org and "Lift":http://liftweb.net.
+
+While offering all the core features like registration and login, following people and - of course - sending messages to followers the amount of code is astonishing small. This comes from Scala's conciseness and Lift's powerful features like ready-to-use user management and superb Comet support.
+
+Take a look at the "source code":http://github.com/weiglewilczek/chatter or start chattering at our "live site":http://weiglewilczek.com/labs/chatter.
+
+SLF4S is open source software licensed under the "Eclipse Public License v1.0":http://www.eclipse.org/legal/epl-v10.html. Just use it!
