@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head> 
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta name="keywords" content="Chat, Chatter"/>
+    <title>Chatter</title>
+    <lift:CSS.blueprint/>
+    <link rel="stylesheet" type="text/css" href="/css/chatter.css"/>
+    <script type="text/javascript" src="/classpath/jquery.js"/>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#lift__noticesContainer___notice").hide();
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="push-2 prepend-1 span-18 append-1 pull-2 last segment">
+        <div class="span-13">
+          <lift:Menu.builder
+            outer_tag="span"
+            inner_tag="span"
+            li:class="menu"
+            li_item:class="menu currentMenu"/>
+        </div>
+        <div class="last" style="float: right;">
+          <img src="/img/chatter-logo.png" title="Chatter" alt="Chatter"/>
+        </div>
+      </div>
+      <div class="push-2 prepend-1 span-18 append-1 pull-2 last segment">
+        <lift:Msgs showAll="true">
+          <lift:error_class>error</lift:error_class>
+          <lift:notice_class>notice</lift:notice_class>
+          <lift:warning_class>error</lift:warning_class>
+        </lift:Msgs>
+        <lift:bind name="content"/>
+      </div>
+
+      <div class="push-2 prepend-1 span-18 append-1 pull-2 last segment">
+        <div id="copyright">Copyright 2010-2011 <a href="http://weiglewilczek.com">WeigleWilczek</a>. Made available under the Apache 2.0 License.</div>
+      </div>
+    </div>
+  </body>
+
+</html>

@@ -1,0 +1,10 @@
+<lift:surround with="default" at="content">
+  <div>
+    <lift:Follow.findAllFollowers>
+      <div class="bold">Your <follow:size/> followers</div>
+      <follow:list>
+        <div><follow:name/></div>
+      </follow:list>
+    </lift:Follow.findAllFollowers>
+  </div>
+</lift:surround>

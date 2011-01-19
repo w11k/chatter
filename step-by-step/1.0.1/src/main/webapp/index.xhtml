@@ -1,0 +1,21 @@
+<lift:surround with="default" at="content">
+  <div>
+    <lift:ChatterInput>
+      <div class="bold">What's happening, <chatter:name/>?</div>
+      <div><chatter:text/></div>
+      <div class="right"><chatter:submit/></div>
+      <hr/>
+    </lift:ChatterInput>
+  </div>
+  <div>
+    <lift:comet type="ChatterMessages">
+      <messages:list>
+        <div>
+          <span class="bold"><message:name/></span>
+          <span class="italic"><message:date/></span>
+          <message:text/>
+        </div>
+      </messages:list>
+    </lift:comet>
+  </div>
+</lift:surround>
