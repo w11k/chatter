@@ -1,10 +1,16 @@
-# Build directory
+# SBT
+target
+lib_managed
+src_managed
+boot
+
+# Maven
 target
 
-# Mac stuff
+# Mac
 .DS_Store
 
-# Eclipse stuff
+# Eclipse
 .classpath
 .launch
 .metadata
@@ -12,13 +18,16 @@ target
 .scala_dependencies
 .settings
 
-# IntelliJ stuff
+# IntelliJ
 .idea
 *.iml
 *.ipr
 *.iws
+out
 
-# Chatter stuff
+# TextMate
+*.tmproj
+
+# This project
 chatter.h2.*
 chatter.log
-

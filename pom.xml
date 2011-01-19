@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  Copyright (c) 2009-2010 WeigleWilczek and others.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Eclipse Public License v1.0
-  which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/epl-v10.html
--->
-
-<!--
 ########################################################################################################################
 Chatter
 ########################################################################################################################
@@ -47,8 +39,8 @@ Chatter
   </organization>
   <licenses>
     <license>
-      <name>Eclipse Public License v1.0</name>
-      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+      <name>Apache 2.0 License</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
     </license>
   </licenses>
   <developers>
@@ -74,9 +66,9 @@ Chatter
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
     <!-- Specific settings for ScalaModules -->
-    <scala.version>2.8.0.RC3</scala.version>
-    <scalatest.version>1.2-for-scala-2.8.0.RC3-SNAPSHOT</scalatest.version>
-    <lift.version>2.0-scala280-SNAPSHOT</lift.version>
+    <scala.version>2.8.0</scala.version>
+    <scalatest.version>1.2</scalatest.version>
+    <lift.version>2.1</lift.version>
   </properties>
 
   <!--
@@ -90,12 +82,12 @@ Chatter
     <!-- Compile -->
     <dependency>
       <groupId>net.liftweb</groupId>
-      <artifactId>lift-webkit</artifactId>
+      <artifactId>lift-webkit_2.8.0</artifactId>
       <version>${lift.version}</version>
     </dependency>
     <dependency>
       <groupId>net.liftweb</groupId>
-      <artifactId>lift-mapper</artifactId>
+      <artifactId>lift-mapper_2.8.0</artifactId>
       <version>${lift.version}</version>
     </dependency>
 
@@ -213,43 +205,6 @@ Chatter
           <contextPath>/</contextPath>
           <scanIntervalSeconds>0</scanIntervalSeconds>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.google.code.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <version>1.4.0</version>
-        <configuration>
-          <header>${basedir}/resources/header.txt</header>
-          <quiet>false</quiet>
-          <failIfMissing>true</failIfMissing>
-          <includes>
-            <include>src/main/scala/**</include>
-            <include>src/test/scala/**</include>
-          </includes>
-          <excludes>
-            <exclude>.git/**</exclude>
-            <exclude>**/.gitignore</exclude>
-            <exclude>**/*.css</exclude>
-            <exclude>**/*.txt</exclude>
-            <exclude>**/*.xhtml</exclude>
-            <exclude>**/*.xml</exclude>
-          </excludes>
-          <useDefaultExcludes>true</useDefaultExcludes>
-          <mapping>
-            <scala>JAVADOC_STYLE</scala>
-          </mapping>
-          <useDefaultMapping>true</useDefaultMapping>
-          <encoding>UTF-8</encoding>
-        </configuration>
-        <executions>
-          <execution>
-            <id>format-headers</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>format</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.scala-tools</groupId>
