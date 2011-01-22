@@ -12,7 +12,7 @@
     </encoder>
   </appender>
 
-  <logger name="com.weiglewilczek.harvester" level="debug" additivity="false">
+  <logger name="com.weiglewilczek.chatter" level="debug" additivity="false">
     <appender-ref ref="console" />
     <appender-ref ref="file" />
   </logger>
