@@ -53,3 +53,9 @@ div, textarea {
   font-style: italic;
   text-align: center;
 }
+
+#input {
+  height: 2.1em;
+  padding: 0.2em;
+  width: 99%;
+}
