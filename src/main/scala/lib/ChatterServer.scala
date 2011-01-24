@@ -23,7 +23,7 @@ import net.liftweb.http.ListenerManager
 object ChatterServer extends LiftActor with ListenerManager with Loggable {
 
   override protected def lowPriority = {
-    case message: String => {
+    case message: Message => {
       logger.debug("Received message: %s".format(message))
       messages +:= message
       updateListeners()
@@ -32,5 +32,5 @@ object ChatterServer extends LiftActor with ListenerManager with Loggable {
 
   override protected def createUpdate = messages take 3
 
-  private var messages = Vector[String]()
+  private var messages = Vector[Message]()
 }

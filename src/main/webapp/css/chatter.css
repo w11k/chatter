@@ -67,3 +67,11 @@ div, textarea {
 #messages > div:nth-child(odd) {
   background-color: #ffb361;
 }
+
+#messages > div > div:first-of-type {
+  font-style: italic;
+}
+
+#messages span.sender {
+  font-weight: bold;
+}

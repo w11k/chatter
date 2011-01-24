@@ -16,7 +16,8 @@
 package com.weiglewilczek.chatter
 package comet
 
-import lib.ChatterServer
+import lib.{ ChatterServer, Message }
+import java.text.DateFormat
 import net.liftweb.common.Loggable
 import net.liftweb.http.{ CometActor, CometListener }
 import net.liftweb.util.ClearClearable
@@ -24,17 +25,23 @@ import net.liftweb.util.ClearClearable
 class ChatterClient extends CometActor with CometListener with Loggable {
 
   override def lowPriority = {
-    case ms: Vector[String] => {
+    case ms: Vector[Message] => {
       logger.debug("Received messages: %s".format(ms))
       messages = (ms diff messages) ++ messages
       reRender()
     }
   }
 
-  override def render =
-    "#message *" #> messages & ClearClearable
+  override def render = {
+    def renderMessage(message: Message) =
+      ".sender *" #> message.sender &
+          ".date *" #> (DateFormat.getDateTimeInstance format message.date) &
+          ".text *" #> message.text
+    "#message" #> (messages map renderMessage) &
+        ClearClearable
+  }
 
   override protected def registerWith = ChatterServer
 
-  private var messages = Vector[String]()
+  private var messages = Vector[Message]()
 }

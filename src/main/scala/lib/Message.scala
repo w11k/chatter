@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 package com.weiglewilczek.chatter
-package snippet
+package lib
 
-import lib.{ ChatterServer, Message }
 import java.util.Date
-import net.liftweb.common.Loggable
-import net.liftweb.http.SHtml
 
-object Input extends Loggable {
-
-  def render = {
-    def handleSubmit(message: String) {
-      logger.debug("Input was submitted: %s".format(message))
-      ChatterServer ! Message("Nobody", new Date, message)
-    }
-    SHtml onSubmit handleSubmit
-  }
+case class Message(sender: String, date: Date, text: String) {
+  require(sender != null, "sender must not be null!")
+  require(date != null, "date must not be null!")
+  require(text != null, "text must not be null!")
 }
