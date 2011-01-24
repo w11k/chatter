@@ -15,9 +15,14 @@
  */
 package com.weiglewilczek.chatter
 
+import model.User
 import net.liftweb.common.Loggable
-import net.liftweb.http.{ Bootable, Html5Properties, LiftRules, Req }
+import net.liftweb.http.{ Bootable, Html5Properties, LiftRules, RedirectResponse, Req }
 import net.liftweb.http.js.jquery.JQuery14Artifacts
+import net.liftweb.mapper.{ DB, DBLogEntry, DefaultConnectionIdentifier, Schemifier, StandardDBVendor }
+import net.liftweb.sitemap.{ Menu, SiteMap }
+import net.liftweb.sitemap.Loc.If
+import net.liftweb.util.Props
 
 class Boot extends Bootable with Loggable {
 
@@ -28,6 +33,21 @@ class Boot extends Bootable with Loggable {
     LiftRules.addToPackages(getClass.getPackage)
 
     // SiteMap
+    val ifLoggedIn =
+      If(() => User.loggedIn_?, () => RedirectResponse(User.loginPageURL))
+    val homeMenu = Menu("Home") / "index" >> ifLoggedIn
+    val menus = homeMenu :: User.menus
+    LiftRules.setSiteMap(SiteMap(menus: _*))
+
+    // DB configuration
+    val dbVendor =
+      new StandardDBVendor(
+        Props get "db.driver" openOr "org.postgresql.Driver",
+        Props get "db.url" openOr "jdbc:postgresql://localhost/chatter",
+        Props get "db.user",
+        Props get "db.password")
+    DB.defineConnectionManager(DefaultConnectionIdentifier, dbVendor)
+    Schemifier.schemify(true, Schemifier.infoF _, User)
 
     // Other configuration stuff
     LiftRules.early.append { _ setCharacterEncoding "UTF-8" }

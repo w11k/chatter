@@ -20,6 +20,11 @@ div, textarea {
   font-size: 1em;
 }
 
+ul {
+  margin: 0;
+  padding-left: 1em;
+}
+
 #topArea, #centerArea, #bottomArea {
   background-color: white;
   margin-top: 1em;
@@ -52,6 +57,13 @@ div, textarea {
 #copyright {
   font-style: italic;
   text-align: center;
+}
+
+#lift__noticesContainer___error {
+  background-color: #ffb361;
+  color: #9b1d23;
+  margin-bottom: 1em;
+  padding: 0.5em 0.2em 0.5em 0.2em;
 }
 
 #input {

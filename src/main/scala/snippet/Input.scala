@@ -17,6 +17,7 @@ package com.weiglewilczek.chatter
 package snippet
 
 import lib.{ ChatterServer, Message }
+import model.User
 import java.util.Date
 import net.liftweb.common.Loggable
 import net.liftweb.http.SHtml
@@ -26,7 +27,7 @@ object Input extends Loggable {
   def render = {
     def handleSubmit(message: String) {
       logger.debug("Input was submitted: %s".format(message))
-      ChatterServer ! Message("Nobody", new Date, message)
+      ChatterServer ! Message(User.currentUserName, new Date, message)
     }
     SHtml onSubmit handleSubmit
   }
