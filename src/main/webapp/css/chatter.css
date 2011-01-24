@@ -59,3 +59,11 @@ div, textarea {
   padding: 0.2em;
   width: 99%;
 }
+
+#messages > div {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#messages > div:nth-child(odd) {
+  background-color: #ffb361;
+}

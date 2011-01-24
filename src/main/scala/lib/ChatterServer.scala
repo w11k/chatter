@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 package com.weiglewilczek.chatter
-package snippet
+package lib
 
+import net.liftweb.actor.LiftActor
 import net.liftweb.common.Loggable
-import net.liftweb.http.SHtml
-import com.weiglewilczek.chatter.lib.ChatterServer
+import net.liftweb.http.ListenerManager
 
-object Input extends Loggable {
+object ChatterServer extends LiftActor with ListenerManager with Loggable {
 
-  def render = {
-    def handleSubmit(message: String) {
-      logger.debug("Input was submitted: %s".format(message))
-      ChatterServer ! message
+  override protected def lowPriority = {
+    case message: String => {
+      logger.debug("Received message: %s".format(message))
+      messages +:= message
+      updateListeners()
     }
-    SHtml onSubmit handleSubmit
   }
+
+  override protected def createUpdate = messages take 3
+
+  private var messages = Vector[String]()
 }

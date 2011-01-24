@@ -14,19 +14,27 @@
  * limitations under the License.
  */
 package com.weiglewilczek.chatter
-package snippet
+package comet
 
+import lib.ChatterServer
 import net.liftweb.common.Loggable
-import net.liftweb.http.SHtml
-import com.weiglewilczek.chatter.lib.ChatterServer
+import net.liftweb.http.{ CometActor, CometListener }
+import net.liftweb.util.ClearClearable
 
-object Input extends Loggable {
+class ChatterClient extends CometActor with CometListener with Loggable {
 
-  def render = {
-    def handleSubmit(message: String) {
-      logger.debug("Input was submitted: %s".format(message))
-      ChatterServer ! message
+  override def lowPriority = {
+    case ms: Vector[String] => {
+      logger.debug("Received messages: %s".format(ms))
+      messages = (ms diff messages) ++ messages
+      reRender()
     }
-    SHtml onSubmit handleSubmit
   }
+
+  override def render =
+    "#message *" #> messages & ClearClearable
+
+  override protected def registerWith = ChatterServer
+
+  private var messages = Vector[String]()
 }
