@@ -15,7 +15,7 @@
  */
 package com.weiglewilczek.chatter
 
-import model.User
+import model.{ User, Follow }
 import net.liftweb.common.Loggable
 import net.liftweb.http.{ Bootable, Html5Properties, LiftRules, RedirectResponse, Req }
 import net.liftweb.http.js.jquery.JQuery14Artifacts
@@ -37,7 +37,8 @@ class Boot extends Bootable with Loggable {
       If(() => User.loggedIn_?, () => RedirectResponse(User.loginPageURL))
     val homeMenu = Menu("Home") / "index" >> ifLoggedIn
     val followingMenu = Menu("Following") / "following" >> ifLoggedIn
-    val menus = homeMenu :: followingMenu :: User.menus
+    val followersMenu = Menu("Followers") / "followers" >> ifLoggedIn
+    val menus = homeMenu :: followingMenu :: followersMenu :: User.menus
     LiftRules.setSiteMap(SiteMap(menus: _*))
 
     // DB configuration
@@ -48,7 +49,7 @@ class Boot extends Bootable with Loggable {
         Props get "db.user",
         Props get "db.password")
     DB.defineConnectionManager(DefaultConnectionIdentifier, dbVendor)
-    Schemifier.schemify(true, Schemifier.infoF _, User)
+    Schemifier.schemify(true, Schemifier.infoF _, User, Follow)
 
     // Other configuration stuff
     LiftRules.early.append { _ setCharacterEncoding "UTF-8" }

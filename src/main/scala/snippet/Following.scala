@@ -16,7 +16,7 @@
 package com.weiglewilczek.chatter
 package snippet
 
-import model.User
+import model.{ User, Follow }
 import net.liftweb.common.Loggable
 import net.liftweb.http.SHtml
 import net.liftweb.http.js.JsCmds
@@ -28,6 +28,7 @@ object Following extends Loggable {
   def currently = {
     def unfollow(user: User)() = {
       logger.debug("About to unfollow user with id: %s".format(user.id.is))
+      Follow.unfollow(user)
       JsCmds.Replace(user.id.is.toString, NodeSeq.Empty)
     }
     import Helpers._
@@ -36,18 +37,19 @@ object Following extends Loggable {
           ".unfollow [onclick]" #> SHtml.ajaxInvoke(unfollow(user) _)._2.toJsCmd &
           ".name *" #> user.shortName &
           ".email *" #> user.email.is
-    "#user" #> (User.findAll map renderUser) &
+    "#user" #> (Follow.findAllFollowing map renderUser) &
         ClearClearable
   }
 
   def start = {
     def renderUser(user: User) =
       <option value={ user.id.is.toString }>{ "%s (%s)".format(user.shortName, user.email.is) }</option>
-    def handleSubmit(s: String) {
-      logger.debug("About to follow user with id: %s".format(s))
+    def handleSubmit(userId: String) {
+      logger.debug("About to follow user with id: %s".format(userId))
+      Follow.follow(userId.toLong)
     }
     import Helpers._
     "#startFollowing" #> (SHtml onSubmit handleSubmit) &
-        "#startFollowing *" #> (User.findAll map renderUser)
+        "#startFollowing *" #> (Follow.findAllNotFollowing map renderUser)
   }
 }

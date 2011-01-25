@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Chatter</title>
+    <link rel="stylesheet" type="text/css" href="./css/chatter.css"/>
+    <script type="text/javascript" src="./js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="./js/chatter.js"></script>
+  </head>
+
+  <body class="lift:content_id=content">
+
+    <div id="topArea">
+      <div id="logo">
+        <img src="./img/chatter-logo.png" alt="Chatter" title="Chatter"/>
+      </div>
+      <div id="menu">
+        <span>
+          <div><a href="#">Home</a></div>
+          <div><a href="#">Following</a></div>
+          <div><span>Followers</span></div>
+          <div><a href="#">Change Password</a></div>
+          <div><a href="#">Logout</a></div>
+        </span>
+      </div>
+    </div>
+
+    <div id="centerArea">
+      <div id="content" class="lift:surround?with=default;at=content">
+        <div id="followers" class="lift:followers">
+          <h3>Your <span class="count">4</span> followers</h3>
+          <div id="user">
+            <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+          </div>
+          <div class="clearable">
+            <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+          </div>
+          <div class="clearable">
+            <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+          </div>
+          <div class="clearable">
+            <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bottomArea">
+        <div id="copyright">
+          Copyright 2010-2011 <a href="http://weiglewilczek.com">WeigleWilczek</a>. Made available under the Apache 2.0 License.
+        </div>
+    </div>
+
+  </body>
+
+</html>
