@@ -14,7 +14,7 @@ body {
   width: 960px;
 }
 
-div, textarea {
+div, input, select, textarea {
   color: #333333;
   font-family: sans-serif;
   font-size: 1em;
@@ -86,4 +86,17 @@ ul {
 
 #messages span.sender {
   font-weight: bold;
+}
+
+#currentlyFollowing > div {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#currentlyFollowing > div:nth-child(odd) {
+  background-color: #ffb361;
+}
+
+.unfollow {
+  cursor: pointer;
+  vertical-align: middle;
 }

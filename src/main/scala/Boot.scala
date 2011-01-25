@@ -36,7 +36,8 @@ class Boot extends Bootable with Loggable {
     val ifLoggedIn =
       If(() => User.loggedIn_?, () => RedirectResponse(User.loginPageURL))
     val homeMenu = Menu("Home") / "index" >> ifLoggedIn
-    val menus = homeMenu :: User.menus
+    val followingMenu = Menu("Following") / "following" >> ifLoggedIn
+    val menus = homeMenu :: followingMenu :: User.menus
     LiftRules.setSiteMap(SiteMap(menus: _*))
 
     // DB configuration
