@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Chatter</title>
+    <link rel="stylesheet" type="text/css" href="./css/chatter.css"/>
+    <script type="text/javascript" src="./js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="./js/chatter.js"></script>
+  </head>
+
+  <body class="lift:content_id=content">
+
+    <div id="topArea">
+      <div id="logo">
+        <img src="./img/chatter-logo.png" alt="Chatter" title="Chatter"/>
+      </div>
+      <div id="menu">
+        <span>
+          <div><a href="#">Home</a></div>
+          <div><span>Following</span></div>
+          <div><a href="#">Followers</a></div>
+          <div><a href="#">Change Password</a></div>
+          <div><a href="#">Logout</a></div>
+        </span>
+      </div>
+    </div>
+
+    <div id="centerArea">
+      <div id="content" class="lift:surround?with=default;at=content">
+
+        <h3>Currently following</h3>
+        <div id="currentlyFollowing" class="lift:following.currently">
+          <div id="user">
+            <img class="unfollow" src="./img/unfollow.png"/> <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+          </div>
+          <div class="clearable">
+            <img class="unfollow" src="./img/unfollow.png"/> <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+          </div>
+          <div class="clearable">
+            <img class="unfollow" src="./img/unfollow.png"/> <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+          </div>
+          <div class="clearable">
+            <img class="unfollow" src="./img/unfollow.png"/> <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+          </div>
+        </div>
+
+        <h3>Start following</h3>
+        <form class="lift:following.start?form=post">
+          <select id="startFollowing">
+            <option>John Doe (john.doe@chatter.com)</option>
+            <option>John Doe (john.doe@chatter.com)</option>
+            <option>John Doe (john.doe@chatter.com)</option>
+            <option>John Doe (john.doe@chatter.com)</option>
+          </select>
+          <input id="submit" type="submit" value="Start now"/>
+        </form>
+      </div>
+    </div>
+
+    <div id="bottomArea">
+        <div id="copyright">
+          Copyright 2010-2011 <a href="http://weiglewilczek.com">WeigleWilczek</a>. Made available under the Apache 2.0 License.
+        </div>
+    </div>
+
+  </body>
+
+</html>

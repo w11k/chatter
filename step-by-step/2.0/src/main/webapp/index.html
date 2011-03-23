@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Chatter</title>
+    <link rel="stylesheet" type="text/css" href="./css/chatter.css"/>
+    <script type="text/javascript" src="./js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="./js/chatter.js"></script>
+  </head>
+
+  <body class="lift:content_id=content">
+
+    <div id="topArea">
+      <div id="logo">
+        <img src="./img/chatter-logo.png" alt="Chatter" title="Chatter"/>
+      </div>
+      <div id="menu">
+        <span>
+          <div><span>Home</span></div>
+          <div><a href="#">Following</a></div>
+          <div><a href="#">Followers</a></div>
+          <div><a href="#">Change Password</a></div>
+          <div><a href="#">Logout</a></div>
+        </span>
+      </div>
+    </div>
+
+    <div id="centerArea">
+      <div id="content" class="lift:surround?with=default;at=content">
+        <h3>What's happening?</h3>
+        <form class="lift:form.ajax">
+          <textarea id="input" class="lift:input">Enter your message here!</textarea>
+        </form>
+        <h3>Timeline</h3>
+        <div id="messages" class="lift:comet?type=chatterClient">
+          <div id="message">
+            <div><span class="sender">John Doe</span> at <span class="date">Jan 24, 2011 10:36:14 AM</span></div>
+            <div class="text">Here is message 1.</div>
+          </div>
+          <div class="clearable">
+            <div><span class="sender">John Doe</span> at <span class="date">Jan 24, 2011 10:36:14 AM</span></div>
+            <div class="text">Here is message 2.</div>
+          </div>
+          <div class="clearable">
+            <div><span class="sender">John Doe</span> at <span class="date">Jan 24, 2011 10:36:14 AM</span></div>
+            <div class="text">Here is message 3.</div>
+          </div>
+          <div class="clearable">
+            <div><span class="sender">John Doe</span> at <span class="date">Jan 24, 2011 10:36:14 AM</span></div>
+            <div class="text">Here is message 4.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bottomArea">
+        <div id="copyright">
+          Copyright 2010-2011 <a href="http://weiglewilczek.com">WeigleWilczek</a>. Made available under the Apache 2.0 License.
+        </div>
+    </div>
+
+  </body>
+
+</html>
