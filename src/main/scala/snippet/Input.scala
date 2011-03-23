@@ -27,7 +27,11 @@ object Input extends Loggable {
   def render = {
     def handleSubmit(message: String) {
       logger.debug("Input was submitted: %s".format(message))
-      ChatterServer ! Message(User.currentUserName, new Date, message)
+      ChatterServer ! Message(
+          User.currentUserId openOr error("No current user!"),
+          User.currentUserName,
+          new Date,
+          message)
     }
     SHtml onSubmit handleSubmit
   }

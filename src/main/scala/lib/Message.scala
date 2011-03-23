@@ -18,7 +18,8 @@ package lib
 
 import java.util.Date
 
-case class Message(sender: String, date: Date, text: String) {
+case class Message(senderId: String, sender: String, date: Date, text: String) {
+  require(senderId != null, "senderId must not be null!")
   require(sender != null, "sender must not be null!")
   require(date != null, "date must not be null!")
   require(text != null, "text must not be null!")

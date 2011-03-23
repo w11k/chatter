@@ -17,6 +17,7 @@ package com.weiglewilczek.chatter
 package comet
 
 import lib.{ ChatterServer, Message }
+import model.{ Follow, User }
 import java.text.DateFormat
 import net.liftweb.common.Loggable
 import net.liftweb.http.{ CometActor, CometListener }
@@ -27,7 +28,10 @@ class ChatterClient extends CometActor with CometListener with Loggable {
   override def lowPriority = {
     case ms: Vector[Message] => {
       logger.debug("Received messages: %s".format(ms))
-      messages = (ms diff messages) ++ messages
+      def following(message: Message) =
+        (message.senderId == (User.currentUserId openOr error("No current user!"))) ||
+            (Follow.findAllFollowing map { _.id.is.toString } contains message.senderId)
+      messages = (ms filter following diff messages) ++ messages
       reRender()
     }
   }
