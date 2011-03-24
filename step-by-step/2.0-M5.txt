@@ -1,0 +1,115 @@
+================================================
+2.0-M5: Added user management and access control
+================================================
+
+---------------------
+templates-hidden.html
+---------------------
+
+Dummy Menu
+
+=>
+
+<div class="lift:menu.builder?outer_tag=span&inner_tag=div"></div>
+
++
+
+Über content-div:
+<div class="lift:msgs?showAll=true"></div>
+
+-----------
+chatter.css
+-----------
+
+ul {
+  margin: 0;
+  padding-left: 1em;
+}
+
+#lift__noticesContainer___error {
+  background-color: #ffb361;
+  color: #9b1d23;
+  margin-bottom: 1em;
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+----------
+User.scala
+----------
+
+object User extends User with MetaMegaProtoUser[User] {
+
+  def currentUserName = User.currentUser map { _.shortName } openOr error("No current user!")
+
+  override def signupFields = firstName :: email :: password :: Nil
+
+  override def menus =
+    List(loginMenuLoc, createUserMenuLoc, changePasswordMenuLoc, logoutMenuLoc).flatten
+
+  override def skipEmailValidation = true
+
+  override def loginXhtml = surround(super.loginXhtml)
+
+  override def signupXhtml(user: User) = surround(super.signupXhtml(user))
+
+  override def changePasswordXhtml = surround(super.changePasswordXhtml)
+
+  private def surround(xhtml: => NodeSeq) =
+    <lift:surround with="default" at="content">{ xhtml }</lift:surround>
+}
+
+class User extends MegaProtoUser[User] {
+
+  override def firstNameDisplayName = "Name"
+
+  override def getSingleton = User
+}
+
+----------
+Boot.scala
+----------
+
+// SiteMap
+val ifLoggedIn =
+  If(() => User.loggedIn_?, () => RedirectResponse(User.loginPageURL))
+val homeMenu = Menu("Home") / "index" >> ifLoggedIn
+val menus = homeMenu :: User.menus
+LiftRules.setSiteMap(SiteMap(menus: _*))
+
+// DB configuration
+val dbVendor =
+  new StandardDBVendor(
+    Props get "db.driver" openOr "org.postgresql.Driver",
+    Props get "db.url" openOr "jdbc:postgresql://localhost/chatter",
+    Props get "db.user",
+    Props get "db.password")
+DB.defineConnectionManager(DefaultConnectionIdentifier, dbVendor)
+Schemifier.schemify(true, Schemifier.infoF _, User)
+
+-----------
+Input.scala
+-----------
+
+Message("Nobody", new Date, message)
+
+=>
+
+Message(User.currentUserName, new Date, message)
+
+-------------
+default.props
+-------------
+
+db.driver = org.postgresql.Driver
+db.url = jdbc:postgresql://localhost/chatter
+db.user = chatter
+db.password = chatter
+
+-------------------
+default.logback.xml
+-------------------
+
+<logger name="net.liftweb.mapper" level="info" additivity="false">
+  <appender-ref ref="console" />
+  <appender-ref ref="file" />
+</logger>

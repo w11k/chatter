@@ -1,0 +1,102 @@
+====================================
+2.0-M6: Cheating follower management
+====================================
+
+--------------
+following.html
+--------------
+
+<div id="content" class="lift:surround?with=default;at=content">
+
+  <h3>Currently following</h3>
+  <div id="currentlyFollowing" class="lift:following.currently">
+    <div id="user">
+      <img class="unfollow" src="./img/unfollow.png"/> <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+    </div>
+    <div class="clearable">
+      <img class="unfollow" src="./img/unfollow.png"/> <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+    </div>
+    <div class="clearable">
+      <img class="unfollow" src="./img/unfollow.png"/> <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+    </div>
+    <div class="clearable">
+      <img class="unfollow" src="./img/unfollow.png"/> <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+    </div>
+  </div>
+
+  <h3>Start following</h3>
+  <form class="lift:following.start?form=post">
+    <select id="startFollowing">
+      <option>John Doe (john.doe@chatter.com)</option>
+      <option>John Doe (john.doe@chatter.com)</option>
+      <option>John Doe (john.doe@chatter.com)</option>
+      <option>John Doe (john.doe@chatter.com)</option>
+    </select>
+    <input id="submit" type="submit" value="Start now"/>
+  </form>
+</div>
+
+-----------
+chatter.css
+-----------
+
+div, textarea {
+
+=>
+
+div, input, select, textarea {
+
++
+
+#currentlyFollowing > div {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#currentlyFollowing > div:nth-child(odd) {
+  background-color: #ffb361;
+}
+
+.unfollow {
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+---------------
+Following.scala
+---------------
+
+object Following extends Loggable {
+
+  def currently = {
+    def unfollow(user: User)() = {
+      logger.debug("About to unfollow user with id: %s".format(user.id.is))
+      JsCmds.Replace(user.id.is.toString, NodeSeq.Empty)
+    }
+    import Helpers._
+    def renderUser(user: User) =
+      "#user [id]" #> user.id.is.toString &
+          ".unfollow [onclick]" #> SHtml.ajaxInvoke(unfollow(user) _)._2.toJsCmd &
+          ".name *" #> user.shortName &
+          ".email *" #> user.email.is
+    "#user" #> (User.findAll map renderUser) &
+        ClearClearable
+  }
+
+  def start = {
+    def renderUser(user: User) =
+      <option value={ user.id.is.toString }>{ "%s (%s)".format(user.shortName, user.email.is) }</option>
+    def handleSubmit(s: String) {
+      logger.debug("About to follow user with id: %s".format(s))
+    }
+    import Helpers._
+    "#startFollowing" #> (SHtml onSubmit handleSubmit) &
+        "#startFollowing *" #> (User.findAll map renderUser)
+  }
+}
+
+----------
+Boot.scala
+----------
+
+val followingMenu = Menu("Following") / "following" >> ifLoggedIn
+val menus = homeMenu :: followingMenu :: User.menus

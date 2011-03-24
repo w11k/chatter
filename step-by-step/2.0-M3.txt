@@ -1,0 +1,81 @@
+=============================================
+2.0-M3: Comet based timline (message display)
+=============================================
+
+----------
+index.html
+----------
+
+<h3>Timeline</h3>
+<div id="messages" class="lift:comet?type=chatterClient">
+  <div id="message">Message 1</div>
+  <div class="clearable">Message 2</div>
+  <div class="clearable">Message 3</div>
+  <div class="clearable">Message 4</div>
+</div>
+
+-----------
+chatter.css
+-----------
+
+#messages > div {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#messages > div:nth-child(odd) {
+  background-color: #ffb361;
+}
+
+-------------------
+ChatterServer.scala
+-------------------
+
+object ChatterServer extends LiftActor with ListenerManager with Loggable {
+
+  override protected def lowPriority = {
+    case message: String => {
+      logger.debug("Received message: %s".format(message))
+      messages +:= message
+      updateListeners()
+    }
+  }
+
+  override protected def createUpdate = messages take 3
+
+  private var messages = Vector[String]()
+}
+
+-------------------
+ChatterClient.scala
+-------------------
+
+class ChatterClient extends CometActor with CometListener with Loggable {
+
+  override def lowPriority = {
+    case ms: Vector[String] => {
+      logger.debug("Received messages: %s".format(ms))
+      messages = (ms diff messages) ++ messages
+      reRender()
+    }
+  }
+
+  override def render =
+    "#message *" #> messages & ClearClearable
+
+  override protected def registerWith = ChatterServer
+
+  private var messages = Vector[String]()
+}
+
+-----------
+Input.scala
+-----------
+
+def handleSubmit(s: String) {
+  logger.debug("""Input was submitted: %s""".format(s))
+
+=>
+
+def handleSubmit(message: String) {
+  logger.debug("Input was submitted: %s".format(message))
+  ChatterServer ! message

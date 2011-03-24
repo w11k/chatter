@@ -1,0 +1,57 @@
+================================
+2.0-M2: AJAX based message input
+================================
+
+----------
+index.html
+----------
+
+index.html
+
+=>
+
+<h3>What's happening?</h3>
+<form class="lift:form.ajax">
+  <textarea id="input" class="lift:input">Enter your message here!</textarea>
+</form>
+
+----------
+chatter.js
+----------
+
+$(document).ready(function() {
+  $("#input").focus(function() {
+    $(this).val("");
+  });
+  $("#input").keydown(function(e) {
+    if(e.keyCode == 13) {
+      e.preventDefault();
+      $(this).parent().submit();
+      $(this).val("");
+    }
+  });
+});
+
+-----------
+chatter.css
+-----------
+
+#input {
+  height: 2.1em;
+  padding: 0.2em;
+  width: 99%;
+}
+
+-----------
+Input.scala
+-----------
+
+object Input extends Loggable {
+
+  def render = {
+    def handleSubmit(s: String) {
+      logger.debug("""Input was submitted: %s""".format(s))
+    }
+    SHtml onSubmit handleSubmit
+  }
+}

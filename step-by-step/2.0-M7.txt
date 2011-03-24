@@ -1,0 +1,137 @@
+====================================
+2.0-M7: Finished follower management
+====================================
+
+--------------
+followers.html
+--------------
+
+<div id="content" class="lift:surround?with=default;at=content">
+  <div id="followers" class="lift:followers">
+    <h3>Your <span class="count">4</span> followers</h3>
+    <div id="user">
+      <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+    </div>
+    <div class="clearable">
+      <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+    </div>
+    <div class="clearable">
+      <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+    </div>
+    <div class="clearable">
+      <span class="name">John Doe</span> (<span class="email">john.doe@chatter.com</span>)
+    </div>
+  </div>
+</div>
+
+-----------
+chatter.css
+-----------
+
+#followers > div {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#followers > div:nth-child(even) {
+  background-color: #ffb361;
+}
+
+------------
+Follow.scala
+------------
+
+object Follow extends Follow with LongKeyedMetaMapper[Follow] with Loggable {
+
+  def findAllFollowing: List[User] =
+    User.currentUser map { currentUser =>
+      User findAll In(User.id, followingId, By(userId, currentUser))
+    } openOr Nil
+
+  def findAllNotFollowing: List[User] =
+    User.currentUser map { currentUser =>
+      val dontFollow = currentUser :: findAllFollowing
+      User.findAll filter { user => !(dontFollow contains user) }
+    } openOr Nil
+
+  def findAllFollowers: List[User] =
+    User.currentUser map { currentUser =>
+      User findAll In(User.id, userId, By(followingId, currentUser))
+    } openOr Nil
+
+  def follow(userId: Long) {
+    for (currentUser <- User.currentUser) {
+      Follow.create.userId(currentUser.id.is).followingId(userId).save
+      logger.info("%s is following %s now.".format(currentUser.shortName, User findByKey userId map { _.shortName } openOr ""))
+    }
+  }
+
+  def unfollow(user: User) {
+    for (currentUser <- User.currentUser;
+         following <- Follow.find(By(userId, currentUser), By(followingId, user))) {
+      following.delete_!
+      logger.info("%s is no longer following %s now.".format(currentUser.shortName, user.shortName))
+    }
+  }
+}
+
+class Follow extends LongKeyedMapper[Follow] with IdPK {
+
+  val userId = new MappedLongForeignKey(this, User) {}
+
+  val followingId = new MappedLongForeignKey(this, User) {}
+
+  override def getSingleton = Follow
+}
+
+---------------
+Following.scala
+---------------
+
+logger.debug("About to unfollow user with id: %s".format(user.id.is))
+Follow.unfollow(user)
+
++
+
+"#user" #> (Follow.findAllFollowing map renderUser) &
+
++
+
+def handleSubmit(userId: String) {
+  logger.debug("About to follow user with id: %s".format(userId))
+  Follow.follow(userId.toLong)
+
++
+
+"#startFollowing" #> (SHtml onSubmit handleSubmit) &
+    "#startFollowing *" #> (Follow.findAllNotFollowing map renderUser)
+
+
+---------------
+Followers.scala
+---------------
+
+object Followers {
+
+  def render = {
+    import Helpers._
+    def renderUser(user: User) =
+      ".name *" #> user.shortName &
+          ".email *" #> user.email.is
+    val followers = Follow.findAllFollowers
+    ".count" #> followers.size &
+    "#user" #> (followers map renderUser) &
+        ClearClearable
+  }
+}
+
+
+----------
+Boot.scala
+----------
+
+val followersMenu = Menu("Followers") / "followers" >> ifLoggedIn
+val menus = homeMenu :: followingMenu :: followersMenu :: User.menus
+
++ 
+
+Schemifier.schemify(true, Schemifier.infoF _, User, Follow)

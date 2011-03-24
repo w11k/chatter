@@ -1,0 +1,83 @@
+========================================
+2.0-M4: Real messages instead of strings
+========================================
+
+----------
+index.html
+----------
+
+<div id="message">
+  <div><span class="sender">John Doe</span> at <span class="date">Jan 24, 2011 10:36:14 AM</span></div>
+  <div class="text">Here is message 1.</div>
+</div>
+<div class="clearable">
+  <div><span class="sender">John Doe</span> at <span class="date">Jan 24, 2011 10:36:14 AM</span></div>
+  <div class="text">Here is message 2.</div>
+</div>
+<div class="clearable">
+  <div><span class="sender">John Doe</span> at <span class="date">Jan 24, 2011 10:36:14 AM</span></div>
+  <div class="text">Here is message 3.</div>
+</div>
+<div class="clearable">
+  <div><span class="sender">John Doe</span> at <span class="date">Jan 24, 2011 10:36:14 AM</span></div>
+  <div class="text">Here is message 4.</div>
+</div>
+
+-----------
+chatter.css
+-----------
+
+#messages > div > div:first-of-type {
+  font-style: italic;
+}
+
+#messages span.sender {
+  font-weight: bold;
+}
+
+-------------
+Message.scala
+-------------
+
+case class Message(sender: String, date: Date, text: String) {
+  require(sender != null, "sender must not be null!")
+  require(date != null, "date must not be null!")
+  require(text != null, "text must not be null!")
+}
+
+-----------
+Input.scala
+-----------
+
+ChatterServer ! message
+
+=>
+
+ChatterServer ! Message("Nobody", new Date, message)
+
+-------------------
+ChatterServer.scala
+-------------------
+
+String 
+
+=>
+
+Message
+
+-------------------
+ChatterClient.scala
+-------------------
+
+override def render =
+  "#message *" #> messages & ClearClearable
+
+=> 
+
+override def render =
+  def renderMessage(message: Message) =
+    ".sender *" #> message.sender &
+        ".date *" #> (DateFormat.getDateTimeInstance format message.date) &
+        ".text *" #> message.text
+  "#message" #> (messages map renderMessage) &
+      ClearClearable
