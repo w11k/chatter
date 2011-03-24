@@ -1,0 +1,4 @@
+db.driver = org.postgresql.Driver
+db.url = jdbc:postgresql://localhost/chatter
+db.user = chatter
+db.password = chatter

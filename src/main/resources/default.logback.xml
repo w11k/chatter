@@ -2,17 +2,22 @@
 
   <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%level %date %logger{10} [%file:%line] %msg%n</pattern>
+      <pattern>%level %date %logger{10} %msg%n</pattern>
     </encoder>
   </appender>
   <appender name="file" class="ch.qos.logback.core.FileAppender">
     <file>chatter.log</file>
     <encoder>
-      <pattern>%level %date [%thread] %logger [%file:%line] %msg%n</pattern>
+      <pattern>%level %date [%thread] %logger %msg%n</pattern>
     </encoder>
   </appender>
 
   <logger name="com.weiglewilczek.chatter" level="debug" additivity="false">
+    <appender-ref ref="console" />
+    <appender-ref ref="file" />
+  </logger>
+
+  <logger name="net.liftweb.mapper" level="info" additivity="false">
     <appender-ref ref="console" />
     <appender-ref ref="file" />
   </logger>
