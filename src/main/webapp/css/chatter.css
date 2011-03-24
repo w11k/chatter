@@ -14,10 +14,15 @@ body {
   width: 960px;
 }
 
-div, textarea {
+div, input, select, textarea {
   color: #333333;
   font-family: sans-serif;
   font-size: 1em;
+}
+
+ul {
+  margin: 0;
+  padding-left: 1em;
 }
 
 #topArea, #centerArea, #bottomArea {
@@ -52,4 +57,54 @@ div, textarea {
 #copyright {
   font-style: italic;
   text-align: center;
+}
+
+#lift__noticesContainer___error {
+  background-color: #ffb361;
+  color: #9b1d23;
+  margin-bottom: 1em;
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#input {
+  height: 2.1em;
+  padding: 0.2em;
+  width: 99%;
+}
+
+#messages > div {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#messages > div:nth-child(odd) {
+  background-color: #ffb361;
+}
+
+#messages > div > div:first-of-type {
+  font-style: italic;
+}
+
+#messages span.sender {
+  font-weight: bold;
+}
+
+#currentlyFollowing > div {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#currentlyFollowing > div:nth-child(odd) {
+  background-color: #ffb361;
+}
+
+.unfollow {
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+#followers > div {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+#followers > div:nth-child(even) {
+  background-color: #ffb361;
 }
