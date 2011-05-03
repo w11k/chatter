@@ -15,9 +15,14 @@
  */
 package com.weiglewilczek.chatter
 
+import model._
 import net.liftweb.common.Loggable
-import net.liftweb.http.{ Bootable, Html5Properties, LiftRules, Req }
+import net.liftweb.http.{ RedirectResponse, Bootable, Html5Properties, LiftRules, Req }
 import net.liftweb.http.js.jquery.JQuery14Artifacts
+import net.liftweb.mapper.{ StandardDBVendor, DB, DefaultConnectionIdentifier, Schemifier }
+import net.liftweb.sitemap.{Menu, SiteMap}
+import net.liftweb.sitemap.Loc.If
+import net.liftweb.util.Props
 
 class Boot extends Bootable with Loggable {
 
@@ -26,8 +31,6 @@ class Boot extends Bootable with Loggable {
 
     // Where do we look for Lift packages?
     LiftRules.addToPackages(getClass.getPackage)
-
-    // SiteMap
 
     // Other configuration stuff
     LiftRules.early.append { _ setCharacterEncoding "UTF-8" }
