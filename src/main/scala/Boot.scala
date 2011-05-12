@@ -15,14 +15,14 @@
  */
 package com.weiglewilczek.chatter
 
-import model.{ User, Follow }
+import model.{MessageDB, User, Follow}
 import net.liftweb.common.Loggable
-import net.liftweb.http.{ Bootable, Html5Properties, LiftRules, RedirectResponse, Req }
 import net.liftweb.http.js.jquery.JQuery14Artifacts
 import net.liftweb.mapper.{ DB, DBLogEntry, DefaultConnectionIdentifier, Schemifier, StandardDBVendor }
-import net.liftweb.sitemap.{ Menu, SiteMap }
 import net.liftweb.sitemap.Loc.If
 import net.liftweb.util.Props
+import net.liftweb.http._
+import net.liftweb.sitemap.{Loc, Menu, SiteMap}
 
 class Boot extends Bootable with Loggable {
 
@@ -36,9 +36,11 @@ class Boot extends Bootable with Loggable {
     val ifLoggedIn =
       If(() => User.loggedIn_?, () => RedirectResponse(User.loginPageURL))
     val homeMenu = Menu("Home") / "index" >> ifLoggedIn
+    //Hidden Menu in order to get URL Rewriting to Work
+    val userMenu = Menu("User") / "user" >> Loc.Hidden
     val followingMenu = Menu("Following") / "following" >> ifLoggedIn
     val followersMenu = Menu("Followers") / "followers" >> ifLoggedIn
-    val menus = homeMenu :: followingMenu :: followersMenu :: User.menus
+    val menus = homeMenu :: followingMenu :: followersMenu :: userMenu :: User.menus
     LiftRules.setSiteMap(SiteMap(menus: _*))
 
     // DB configuration
@@ -49,12 +51,19 @@ class Boot extends Bootable with Loggable {
         Props get "db.user",
         Props get "db.password")
     DB.defineConnectionManager(DefaultConnectionIdentifier, dbVendor)
-    Schemifier.schemify(true, Schemifier.infoF _, User, Follow)
+    Schemifier.schemify(true, Schemifier.infoF _, User, Follow, MessageDB)
 
     // Other configuration stuff
     LiftRules.early.append { _ setCharacterEncoding "UTF-8" }
     LiftRules.htmlProperties.default.set { req: Req => new Html5Properties(req.userAgent) }
     LiftRules.jsArtifacts = JQuery14Artifacts
+
+    //URL Rewriting in order to get nice Urls for acces to Users
+    LiftRules.statelessRewrite.prepend{
+      case RewriteRequest(
+             ParsePath("user" :: userId :: Nil,_,_,_),_,_) =>
+             RewriteResponse("user" :: Nil, Map("userId" -> userId))
+    }
 
     logger.info("Successfully booted Chatter. Have fun!")
   }

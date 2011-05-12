@@ -16,22 +16,30 @@
 package com.weiglewilczek.chatter
 package snippet
 
-import lib.{ ChatterServer, Message }
-import model.User
-import java.util.Date
+import model.{MessageDB, User}
+import lib.Message
 import net.liftweb.common.Loggable
-import net.liftweb.http.SHtml
+import net.liftweb.util.Helpers._
+import net.liftweb.http.{S, SHtml}
+import lib.ChatterServer
+import net.liftweb.common.{Full, Failure}
+import comet.ChatterClient
 
-object Input extends Loggable {
+object UserSnippet extends Loggable {
 
   def render = {
-    def handleSubmit(message: String) {
-      logger.debug("Input was submitted: %s".format(message))
-      ChatterServer ! Message(
-          User.currentUser openOr error("No current user!"),
-          new Date,
-          message)
+
+    val userBox = for (
+    idString <- S.param("userId") ?~! "No userid given ";
+    user <- User.find(idString) ?~! "User with id %s not found".format(idString)
+    ) yield user
+
+    val render = userBox match {
+      case Full(user) =>
+      case Failure(message,_,_) => S.error(message)
+      case _ => S.error("Unknown Error")
     }
-    SHtml onSubmit handleSubmit
+
+    "#comet" #> ChatterClient.clientNodeSeq(S.param("userId").open_! :: Nil)
   }
 }

@@ -17,10 +17,34 @@ package com.weiglewilczek.chatter
 package lib
 
 import java.util.Date
+import model.{User, MessageDB}
+import net.liftweb.util.ClearClearable
+import java.text.DateFormat
+import net.liftweb.util.Helpers._
 
-case class Message(senderId: String, sender: String, date: Date, text: String) {
-  require(senderId != null, "senderId must not be null!")
+object Message {
+
+  implicit def toMessageDB(message: Message) : MessageDB = {
+    val mDB = MessageDB.create.userId(message.sender.id.is)
+    mDB.date.set(message.date)
+    mDB.text.set(message.text)
+    mDB
+  }
+
+  def renderMessages(messages: List[Message], userName: String = "asasas") = {
+    def renderMessage(message: Message) =
+      ".sender *" #> message.sender.shortName &
+          ".date *" #> (DateFormat.getDateTimeInstance format message.date) &
+          ".text *" #> message.text
+    "#message *" #> (messages map renderMessage) &
+        ClearClearable
+  }
+}
+
+case class Message(sender: User, date: Date, text: String) {
   require(sender != null, "sender must not be null!")
   require(date != null, "date must not be null!")
   require(text != null, "text must not be null!")
+
+  override def toString = text
 }

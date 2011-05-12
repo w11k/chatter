@@ -47,6 +47,8 @@ object Following extends Loggable {
     def handleSubmit(userId: String) {
       logger.debug("About to follow user with id: %s".format(userId))
       Follow.follow(userId.toLong)
+
+      //TODO jan: Reload ChatterClient on index page
     }
     import Helpers._
     "#startFollowing" #> (SHtml onSubmit handleSubmit) &

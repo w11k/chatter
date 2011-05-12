@@ -25,6 +25,7 @@ object ChatterServer extends LiftActor with ListenerManager with Loggable {
   override protected def lowPriority = {
     case message: Message => {
       logger.debug("Received message: %s".format(message))
+      message.save
       messages +:= message
       updateListeners()
     }
